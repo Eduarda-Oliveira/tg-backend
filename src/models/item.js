@@ -25,7 +25,7 @@ const Item = database.define(
         type: Sequelize.STRING,
         allowNull: false
     },
-    ITE_TAGS: {
+    ITE_CATEGORY: {
         type: Sequelize.STRING,
         allowNull: false
     }, 
@@ -35,7 +35,20 @@ const Item = database.define(
     },
     ITE_ENABLED: {
         type: Sequelize.BOOLEAN,
-        allowNull: false
+        allowNull: false, 
+        defaultValue: true
+    },
+    ITE_SIDE:{
+        type: Sequelize.STRING,
+    },
+    ITE_WEIGHT_CAPECITY:{
+        type: Sequelize.STRING,
+    },
+    ITE_WEIGHT:{
+        type: Sequelize.STRING,
+    },
+    ITE_MATERIAL:{
+        type: Sequelize.STRING,
     },
 });
 module.exports = Item;
