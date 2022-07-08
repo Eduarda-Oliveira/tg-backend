@@ -25,10 +25,6 @@ const Item = database.define(
         type: Sequelize.STRING,
         allowNull: false
     },
-    ITE_CATEGORY: {
-        type: Sequelize.STRING,
-        allowNull: false
-    }, 
     ITE_CONTACT: {
         type: Sequelize.STRING,
         allowNull: false
