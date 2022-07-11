@@ -18,7 +18,7 @@ class CategoryController {
         .catch((err) => {
             try {
             return res.status(400).json({
-                error: err.errors.map((item) => item.message),
+                error: err.errors.map((category) => category.message),
                 type: "validation",
             });
             } catch (e) {
@@ -26,5 +26,25 @@ class CategoryController {
             }
         });
     }
+
+    async list(req, res) {
+      
+        let { limit, offset } = req.body;
+        return await CategoryModel.findAndCountAll({
+          attributes: [ "CAT_ID", "CAT_NAME"],
+          order: [["CAT_NAME", "ASC"]],
+          offset,
+          limit,
+        })
+        .then((category) => {
+          return res.status(200).json({
+            categories: category.rows.map((category) => category.get()),
+            count: category.count,
+          });
+        })
+        .catch((e) => {
+          return res.status(400).json({ error: [e.message] });
+        });
+      }
 }
 module.exports = CategoryController;
