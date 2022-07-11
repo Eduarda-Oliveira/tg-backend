@@ -4,5 +4,6 @@ module.exports = {
     ClientController: require('./ClientController'),
     ItemController: require('./ItemController'),
     PhoneController: require('./PhoneController'),
-    AddressController: require('./AddressController')
+    AddressController: require('./AddressController'),
+    CategoryController: require('./CategoryController'),
   }

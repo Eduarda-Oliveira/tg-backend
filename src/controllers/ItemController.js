@@ -2,10 +2,12 @@ const { ItemModel } = require("../models");
 
 class ItemController {
   async create(req, res) {
-    let {CLI_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE, ITE_CONTACT, ITE_CATEGORY, ITE_ENABLED, ITE_SIDE, ITE_WEIGHT_CAPECITY, ITE_WEIGHT, ITE_MATERIAL} = req.body;
+    let {CLI_ID, CAT_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE, ITE_CONTACT, ITE_ENABLED, ITE_SIDE, ITE_WEIGHT_CAPECITY, ITE_WEIGHT, ITE_MATERIAL} = req.body;
     ITE_PRICE = (ITE_PRICE || "").toString().trim(); //toString().trim(); remove espaços em branco
     ITE_CONTACT = (ITE_CONTACT || "").toString().trim();
     CLI_ID = (CLI_ID || "").toString().trim();
+    CAT_ID = (CAT_ID || "").toString().trim();
+
     if (ITE_TITLE === "") {
       return res
         .status(400)
@@ -24,17 +26,14 @@ class ItemController {
     if (ITE_IMAGE === "") {
       return res.status(400).json({ error: ["Forneça uma imagem para cadastro do produto"] });
     }
-    if (ITE_CATEGORY === "") {
-        return res.status(400).json({ error: ["Forneça uam categoria para cadastro do produto"] });
-      }
     if (ITE_CONTACT === "") {
         return res.status(400).json({ error: ["Forneça um contato para cadastro do produto"] });
     }
 
-    return await ItemModel.create({CLI_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE, ITE_CATEGORY, ITE_CONTACT, ITE_ENABLED, ITE_SIDE, ITE_WEIGHT_CAPECITY, ITE_WEIGHT, ITE_MATERIAL})
+    return await ItemModel.create({CLI_ID, CAT_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE, ITE_CONTACT, ITE_ENABLED, ITE_SIDE, ITE_WEIGHT_CAPECITY, ITE_WEIGHT, ITE_MATERIAL})
       .then(async (r) => {
-        const {CLI_ID, ITE_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE, ITE_CATEGORY, ITE_CONTACT, ITE_ENABLED, ITE_SIDE, ITE_WEIGHT_CAPECITY, ITE_WEIGHT, ITE_MATERIAL} = r.get();
-        return res.status(200).json({CLI_ID, ITE_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE, ITE_CATEGORY, ITE_CONTACT, ITE_ENABLED, ITE_SIDE, ITE_WEIGHT_CAPECITY, ITE_WEIGHT, ITE_MATERIAL});
+        const {CLI_ID, CAT_ID, ITE_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE,  ITE_CONTACT, ITE_ENABLED, ITE_SIDE, ITE_WEIGHT_CAPECITY, ITE_WEIGHT, ITE_MATERIAL} = r.get();
+        return res.status(200).json({CLI_ID, CAT_ID, ITE_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE,  ITE_CONTACT, ITE_ENABLED, ITE_SIDE, ITE_WEIGHT_CAPECITY, ITE_WEIGHT, ITE_MATERIAL});
       })
       .catch((err) => {
         console.log(err);
@@ -95,7 +94,7 @@ class ItemController {
       
       let { limit, offset } = req.body;
       return await ItemModel.findAndCountAll({
-        attributes: ["ITE_ID", "ITE_TITLE", "ITE_PRICE", "ITE_DESCRIPTION", "ITE_IMAGE", "ITE_CATEGORY", "ITE_CONTACT", "ITE_ENABLED"],
+        attributes: ["ITE_ID", "CAT_ID", "ITE_TITLE", "ITE_PRICE", "ITE_DESCRIPTION", "ITE_IMAGE", "ITE_CONTACT", "ITE_ENABLED"],
         order: [["ITE_TITLE", "ASC"]],
         offset,
         limit,
