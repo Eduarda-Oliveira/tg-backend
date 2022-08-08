@@ -22,7 +22,7 @@ const Item = database.define(
         allowNull: false
     },
     ITE_IMAGE: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false
     },
     ITE_CONTACT: {
@@ -33,18 +33,6 @@ const Item = database.define(
         type: Sequelize.BOOLEAN,
         allowNull: false, 
         defaultValue: true
-    },
-    ITE_SIDE:{
-        type: Sequelize.STRING,
-    },
-    ITE_WEIGHT_CAPECITY:{
-        type: Sequelize.STRING,
-    },
-    ITE_WEIGHT:{
-        type: Sequelize.STRING,
-    },
-    ITE_MATERIAL:{
-        type: Sequelize.STRING,
     },
 });
 module.exports = Item;

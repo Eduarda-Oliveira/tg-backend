@@ -2,7 +2,7 @@ const { ItemModel } = require("../models");
 
 class ItemController {
   async create(req, res) {
-    let {CLI_ID, CAT_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE, ITE_CONTACT, ITE_ENABLED, ITE_SIDE, ITE_WEIGHT_CAPECITY, ITE_WEIGHT, ITE_MATERIAL} = req.body;
+    let {CLI_ID, CAT_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE, ITE_CONTACT, ITE_ENABLED} = req.body;
     ITE_PRICE = (ITE_PRICE || "").toString().trim(); //toString().trim(); remove espaços em branco
     ITE_CONTACT = (ITE_CONTACT || "").toString().trim();
     CLI_ID = (CLI_ID || "").toString().trim();
@@ -30,10 +30,10 @@ class ItemController {
         return res.status(400).json({ error: ["Forneça um contato para cadastro do produto"] });
     }
 
-    return await ItemModel.create({CLI_ID, CAT_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE, ITE_CONTACT, ITE_ENABLED, ITE_SIDE, ITE_WEIGHT_CAPECITY, ITE_WEIGHT, ITE_MATERIAL})
+    return await ItemModel.create({CLI_ID, CAT_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE, ITE_CONTACT, ITE_ENABLED})
       .then(async (r) => {
-        const {CLI_ID, CAT_ID, ITE_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE,  ITE_CONTACT, ITE_ENABLED, ITE_SIDE, ITE_WEIGHT_CAPECITY, ITE_WEIGHT, ITE_MATERIAL} = r.get();
-        return res.status(200).json({CLI_ID, CAT_ID, ITE_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE,  ITE_CONTACT, ITE_ENABLED, ITE_SIDE, ITE_WEIGHT_CAPECITY, ITE_WEIGHT, ITE_MATERIAL});
+        const {CLI_ID, CAT_ID, ITE_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE,  ITE_CONTACT, ITE_ENABLED} = r.get();
+        return res.status(200).json({CLI_ID, CAT_ID, ITE_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE,  ITE_CONTACT, ITE_ENABLED});
       })
       .catch((err) => {
         console.log(err);
