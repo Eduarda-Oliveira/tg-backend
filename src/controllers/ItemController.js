@@ -109,6 +109,28 @@ class ItemController {
         return res.status(400).json({ error: [e.message] });
       });
     }
+
+
+    async listCategory(req, res) {
+      
+      let { CAT_ID } = req.body;
+      return await ItemModel.findAll({
+        where: { 
+          CAT_ID: CAT_ID
+        },
+        attributes: ["ITE_ID", "CAT_ID", "ITE_TITLE", "ITE_PRICE", "ITE_DESCRIPTION", "ITE_IMAGE", "ITE_CONTACT", "ITE_ENABLED"],
+        order: [["ITE_TITLE", "ASC"]],
+      })
+      .then((item) => {
+        console.log(item)
+        return res.status(200).json({
+          items: item.map((item) => item.get()),
+        });
+      })
+      .catch((e) => {
+        return res.status(400).json({ error: [e.message] });
+      });
+    }
 }
 
 module.exports = ItemController;
