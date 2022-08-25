@@ -54,28 +54,18 @@ class ItemController {
     //   return res.status(401).json({ error: ["Efetue o login para continuar"] });
     // }
     
-    let {ITE_ENABLED} = req.body;
-    ITE_ENABLED = (ITE_ENABLED || "").toString().trim();
+    let {ITE_ENABLED, ITE_ID} = req.body;
     
     if (ITE_ENABLED === "") {
       return res.status(400).json({ error: ["Forneça o novo status do anuncio"] });
     }
     
-    return await ItemModel.findOne({ where: { ITE_ENABLED } })
+    return await ItemModel.findOne({ where: { ITE_ID } })
     .then(async (item) => {
-      if (item.ITE_ENABLED == ITE_ENABLED){
-        return res.status(400).json({
-          error: ["status do anuncio é igual ao cadastrado"]
-        })
-      }
-
-      if (item) {
         await item.update({ ITE_ENABLED });
         return res.status(200).json({
           item,
-        });
-      }
-      return res.status(400).json({ error: ["Produto não encontrada"] });
+      })
     })
     .catch((err) => {
       console.log(err);
@@ -98,6 +88,9 @@ class ItemController {
         order: [["ITE_TITLE", "ASC"]],
         offset,
         limit,
+        where: { 
+          ITE_ENABLED: true
+        },
       })
       .then((item) => {
         return res.status(200).json({
@@ -113,10 +106,11 @@ class ItemController {
 
     async listCategory(req, res) {
       
-      let { CAT_ID } = req.body;
+      let { CAT_ID } = req.query;
       return await ItemModel.findAll({
         where: { 
-          CAT_ID: CAT_ID
+          CAT_ID: CAT_ID,
+          ITE_ENABLED: true
         },
         attributes: ["ITE_ID", "CAT_ID", "ITE_TITLE", "ITE_PRICE", "ITE_DESCRIPTION", "ITE_IMAGE", "ITE_CONTACT", "ITE_ENABLED"],
         order: [["ITE_TITLE", "ASC"]],
