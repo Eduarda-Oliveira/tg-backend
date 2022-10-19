@@ -54,15 +54,11 @@ class ItemController {
     //   return res.status(401).json({ error: ["Efetue o login para continuar"] });
     // }
     
-    let {ITE_ENABLED, ITE_ID} = req.body;
-    
-    if (ITE_ENABLED === "") {
-      return res.status(400).json({ error: ["Forneça o novo status do anuncio"] });
-    }
+    let {ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION,ITE_ENABLED, ITE_ID} = req.body;
     
     return await ItemModel.findOne({ where: { ITE_ID } })
     .then(async (item) => {
-        await item.update({ ITE_ENABLED });
+        await item.update({ ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_ENABLED });
         return res.status(200).json({
           item,
       })
@@ -125,6 +121,18 @@ class ItemController {
         return res.status(400).json({ error: [e.message] });
       });
     }
-}
+    async getId(req,res){
 
+      let {ITE_ID} = req.query;
+      return await ItemModel.findOne({ where: { ITE_ID} })
+        .then((item) => {
+          return res.status(200).json({
+            item,
+          })
+        })
+      .catch((e) => {
+        return res.status(400).json({ error: [e.message] });
+      });
+    }
+  }
 module.exports = ItemController;
