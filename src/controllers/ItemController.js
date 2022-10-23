@@ -49,10 +49,6 @@ class ItemController {
   }
 
   async update(req,res){
-    // const token = await getToken(req);
-    // if (!token || !token.CLI_ID) {
-    //   return res.status(401).json({ error: ["Efetue o login para continuar"] });
-    // }
     
     let {ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION,ITE_ENABLED, ITE_ID} = req.body;
     
@@ -125,6 +121,19 @@ class ItemController {
 
       let {ITE_ID} = req.query;
       return await ItemModel.findOne({ where: { ITE_ID} })
+        .then((item) => {
+          return res.status(200).json({
+            item,
+          })
+        })
+      .catch((e) => {
+        return res.status(400).json({ error: [e.message] });
+      });
+    }
+    
+    async getUserId(req,res){
+      let {CLI_ID} = req.query;
+      return await ItemModel.findOne({ where: { CLI_ID  } })
         .then((item) => {
           return res.status(200).json({
             item,
