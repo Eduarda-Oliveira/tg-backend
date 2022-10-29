@@ -38,10 +38,9 @@ class ClientController {
         return res.status(200).json({CLI_ID, CLI_NAME, CLI_EMAIL, CLI_CPF, CLI_PASSWORD });
       })
       .catch((err) => {
-        console.log(err);
         try {
           return res.status(400).json({
-            error: err.errors.map((item) => item.message),
+            error: err.errors.map((client) => client.message),
             type: "validation",
           });
         } catch (e) {
@@ -77,10 +76,9 @@ class ClientController {
 
             });
 
-            return res.json({
+            return res.status(200).json({
               token,
               CLI_ID: client.CLI_ID,
-              CLI_EMAIL: client.CLI_EMAIL,
             });
               
           } else
@@ -94,8 +92,27 @@ class ClientController {
         return res.status(400).json({ error: [e.message] });
       });
   }
-  async logout(req, res) {
-    res.json({ auth: false, token: null });
+    async logout(req, res) {
+      res.json({ auth: false, token: null });
+    }
+    async listclient(req, res) {
+      
+    let { limit, offset } = req.body;
+    return await ItemModel.findAndCountAll({
+      attributes: ["CLI_EMAIL", "CLI_PASSWORD", "CLI_NAME", "CLI_CPF"],
+      order: [["CLI_EMAIL", "ASC"]],
+      offset,
+      limit,
+    })
+    .then((client) => {
+      return res.status(200).json({
+        clients: client.rows.map((client) => client.get()),
+        count: client.count,
+      });
+    })
+    .catch((e) => {
+      return res.status(400).json({ error: [e.message] });
+    });
   }
 }
 

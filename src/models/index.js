@@ -2,6 +2,8 @@
   const AddressModel = require("./address");
   const ClientModel = require("./client");
   const ItemModel = require("./item");
+  const CategoryModel = require("./category");
+
   
   //importa o arquivo database/index.js
   const database = require("../db");
@@ -17,8 +19,7 @@
     hooks: true, //usado para forçar o cascade no onDelete
   });
   PhoneModel.belongsTo(ClientModel, {
-    foreignKey: "CLI_ID",
-    targetKey: "CLI_ID",
+    foreignKey: "CLI_ID"
   });
 
   ClientModel.hasMany(AddressModel, {
@@ -32,8 +33,7 @@
     hooks: true, //usado para forçar o cascade no onDelete
   });
   AddressModel.belongsTo(ClientModel, {
-    foreignKey: "CLI_ID",
-    targetKey: "CLI_ID",
+    foreignKey: "CLI_ID"
   });
    
   ClientModel.hasMany(ItemModel, {
@@ -47,8 +47,20 @@
     hooks: true, //usado para forçar o cascade no onDelete
   });
   ItemModel.belongsTo(ClientModel, {
-    foreignKey: "CLI_ID",
-    targetKey: "CLI_ID",
+    foreignKey: "CLI_ID"
+  });
+  CategoryModel.hasOne(ItemModel, {
+    foreignKey: {
+      name: "CAT_ID",
+      allowNull: false,
+    },
+    sourceKey: "CAT_ID",
+    onDelete: "cascade",
+    onUpdate: "cascade",
+    hooks: true, //usado para forçar o cascade no onDelete
+  });
+  ItemModel.belongsTo(CategoryModel, {
+    foreignKey: "CAT_ID"
   });
 
   //cria as tabelas no SGBD se elas não existirem
@@ -58,5 +70,6 @@
     PhoneModel,
     AddressModel,
     ClientModel,
-    ItemModel
+    ItemModel,
+    CategoryModel,
   };

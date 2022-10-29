@@ -22,20 +22,17 @@ const Item = database.define(
         allowNull: false
     },
     ITE_IMAGE: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false
     },
-    ITE_TAGS: {
-        type: Sequelize.STRING,
-        allowNull: false
-    }, 
     ITE_CONTACT: {
         type: Sequelize.STRING,
         allowNull: false
     },
     ITE_ENABLED: {
         type: Sequelize.BOOLEAN,
-        allowNull: false
+        allowNull: false, 
+        defaultValue: true
     },
 });
 module.exports = Item;
