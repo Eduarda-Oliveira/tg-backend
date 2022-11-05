@@ -29,6 +29,14 @@ const Item = database.define(
         type: Sequelize.STRING,
         allowNull: false
     },
+    ITE_CITY: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      ITE_NEIGHBORHOOD: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
     ITE_ENABLED: {
         type: Sequelize.BOOLEAN,
         allowNull: false, 
