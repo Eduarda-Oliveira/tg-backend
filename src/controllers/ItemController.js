@@ -2,7 +2,7 @@ const { ItemModel } = require("../models");
 
 class ItemController {
   async create(req, res) {
-    let {CLI_ID, CAT_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE, ITE_CONTACT, ITE_ENABLED} = req.body;
+    let {CLI_ID, CAT_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE, ITE_CONTACT, ITE_ENABLED, ITE_CITY, ITE_NEIGHBORHOOD} = req.body;
     ITE_PRICE = (ITE_PRICE || "").toString().trim(); //toString().trim(); remove espaços em branco
     ITE_CONTACT = (ITE_CONTACT || "").toString().trim();
     CLI_ID = (CLI_ID || "").toString().trim();
@@ -30,7 +30,7 @@ class ItemController {
         return res.status(400).json({ error: ["Forneça um contato para cadastro do produto"] });
     }
 
-    return await ItemModel.create({CLI_ID, CAT_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE, ITE_CONTACT, ITE_ENABLED})
+    return await ItemModel.create({CLI_ID, CAT_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE, ITE_CONTACT, ITE_CITY, ITE_NEIGHBORHOOD, ITE_ENABLED})
       .then(async (r) => {
         const {CLI_ID, CAT_ID, ITE_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE,  ITE_CONTACT, ITE_ENABLED} = r.get();
         return res.status(200).json({CLI_ID, CAT_ID, ITE_ID, ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_IMAGE,  ITE_CONTACT, ITE_ENABLED});
@@ -50,7 +50,7 @@ class ItemController {
 
   async update(req,res){
     
-    let {ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION,ITE_ENABLED, ITE_ID} = req.body;
+    let {ITE_TITLE, ITE_PRICE, ITE_DESCRIPTION, ITE_ENABLED, ITE_ID} = req.body;
     
     return await ItemModel.findOne({ where: { ITE_ID } })
     .then(async (item) => {
@@ -76,7 +76,7 @@ class ItemController {
       
       let { limit, offset } = req.body;
       return await ItemModel.findAndCountAll({
-        attributes: ["ITE_ID", "CAT_ID", "ITE_TITLE", "ITE_PRICE", "ITE_DESCRIPTION", "ITE_IMAGE", "ITE_CONTACT", "ITE_ENABLED"],
+        attributes: ["ITE_ID", "CAT_ID", "ITE_TITLE", "ITE_PRICE", "ITE_DESCRIPTION", "ITE_IMAGE", "ITE_CONTACT", "ITE_CITY", "ITE_NEIGHBORHOOD", "ITE_ENABLED"],
         order: [["ITE_TITLE", "ASC"]],
         offset,
         limit,
@@ -104,7 +104,7 @@ class ItemController {
           CAT_ID: CAT_ID,
           ITE_ENABLED: true
         },
-        attributes: ["ITE_ID", "CAT_ID", "ITE_TITLE", "ITE_PRICE", "ITE_DESCRIPTION", "ITE_IMAGE", "ITE_CONTACT", "ITE_ENABLED"],
+        attributes: ["ITE_ID", "CAT_ID", "ITE_TITLE", "ITE_PRICE", "ITE_DESCRIPTION", "ITE_IMAGE", "ITE_CONTACT", "ITE_ENABLED", "ITE_CITY", "ITE_NEIGHBORHOOD"],
         order: [["ITE_TITLE", "ASC"]],
       })
       .then((item) => {
